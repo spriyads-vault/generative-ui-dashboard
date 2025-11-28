@@ -5,6 +5,8 @@ import { Send, Loader2 } from "lucide-react";
 import { StockCard } from "@/components/chat/tools/StockCard";
 import { WeatherWidget } from "@/components/chat/tools/WeatherWidget";
 import { KanbanBoard } from "@/components/chat/tools/KanbanBoard";
+import { Header } from "@/components/layout/Header";
+import { Sidebar } from "@/components/layout/Sidebar";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
@@ -85,23 +87,27 @@ export default function Home() {
 
   return (
     <div className="flex h-screen flex-col bg-background">
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-4xl px-4 py-8">
-          {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <h1 className="text-3xl font-semibold mb-2">Generative UI Dashboard</h1>
-              <p className="text-muted-foreground mb-8">
-                Ask me to show stocks, weather, or tasks and I'll render interactive components.
-              </p>
-              <div className="text-sm text-muted-foreground space-y-1">
-                <p>Try: "Show me the stock price for AAPL"</p>
-                <p>Or: "What's the weather in San Francisco?"</p>
-                <p>Or: "Display a task board"</p>
-              </div>
-            </div>
-          )}
+      <Header />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 overflow-y-auto">
+            <div className="mx-auto max-w-4xl px-4 py-8">
+              {messages.length === 0 && (
+                <div className="flex flex-col items-center justify-center h-full text-center">
+                  <h1 className="text-3xl font-semibold mb-2">Generative UI Dashboard</h1>
+                  <p className="text-muted-foreground mb-8">
+                    Ask me to show stocks, weather, or tasks and I'll render interactive components.
+                  </p>
+                  <div className="text-sm text-muted-foreground space-y-1">
+                    <p>Try: "Show me the stock price for AAPL"</p>
+                    <p>Or: "What's the weather in San Francisco?"</p>
+                    <p>Or: "Display a task board"</p>
+                  </div>
+                </div>
+              )}
 
-          <div className="space-y-6">
+              <div className="space-y-6">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -134,46 +140,48 @@ export default function Home() {
               </div>
             ))}
 
-            {isLoading && (
-              <div className="flex items-start gap-3">
-                <div className="rounded-lg border bg-card px-4 py-2">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span>Thinking...</span>
+                {isLoading && (
+                  <div className="flex items-start gap-3">
+                    <div className="rounded-lg border bg-card px-4 py-2">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Thinking...</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className="border-t bg-background">
-        <div className="mx-auto max-w-4xl px-4 py-4">
-          <form onSubmit={handleSubmit} className="flex gap-2">
-            <input
-              value={input}
-              onChange={handleInputChange}
-              placeholder="Ask me to show stocks, weather, or tasks..."
-              className="flex-1 rounded-lg border bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              disabled={isLoading}
-            />
-            <button
-              type="submit"
-              disabled={isLoading || !input.trim()}
-              className={cn(
-                "rounded-lg bg-primary text-primary-foreground px-4 py-2",
-                "disabled:opacity-50 disabled:cursor-not-allowed",
-                "hover:bg-primary/90 transition-colors"
-              )}
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="h-4 w-4" />
-              )}
-            </button>
-          </form>
+          <div className="border-t bg-background">
+            <div className="mx-auto max-w-4xl px-4 py-4">
+              <form onSubmit={handleSubmit} className="flex gap-2">
+                <input
+                  value={input}
+                  onChange={handleInputChange}
+                  placeholder="Ask me to show stocks, weather, or tasks..."
+                  className="flex-1 rounded-lg border bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  disabled={isLoading}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading || !input.trim()}
+                  className={cn(
+                    "rounded-lg bg-primary text-primary-foreground px-4 py-2",
+                    "disabled:opacity-50 disabled:cursor-not-allowed",
+                    "hover:bg-primary/90 transition-colors"
+                  )}
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
