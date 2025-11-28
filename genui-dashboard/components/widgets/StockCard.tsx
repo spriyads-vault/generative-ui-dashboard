@@ -1,45 +1,15 @@
-"use client";
-
-import { useMemo } from "react";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Activity } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { StockData } from '../../types';
+import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Activity } from 'lucide-react';
 
 interface StockCardProps {
-  data: {
-    symbol: string;
-    price: number;
-    change: number;
-    history: { time: string; value: number }[];
-    low: number;
-    high: number;
-    open: number;
-    volume: string;
-    marketCap?: string;
-  };
+  data: StockData;
 }
 
-// Generate dummy chart data
-const generateChartData = (basePrice: number, change: number) => {
-  const data = [];
-  const trend = change > 0 ? 1 : -1;
-  const volatility = Math.abs(change) * 0.1;
-  
-  for (let i = 0; i < 20; i++) {
-    const variation = (Math.random() - 0.5) * volatility * basePrice;
-    const trendValue = (i / 20) * trend * Math.abs(change) * 0.01 * basePrice;
-    data.push({
-      time: `${i}:00`,
-      value: basePrice + variation + trendValue,
-    });
-  }
-  return data;
-};
-
-export function StockCard({ data }: StockCardProps) {
-  const isPositive = (data.change || 0) >= 0;
+const StockCard: React.FC<StockCardProps> = ({ data }) => {
+  const isPositive = data.change >= 0;
   const color = isPositive ? '#10b981' : '#ef4444'; // emerald-500 : red-500
-  const chartData = data.history.length > 0 ? data.history : generateChartData(data.price, data.change || 0);
   
   return (
     <div className="bg-[#121214] border border-[#27272a] rounded-2xl p-6 w-full max-w-[400px] shadow-2xl overflow-hidden relative group">
@@ -58,10 +28,10 @@ export function StockCard({ data }: StockCardProps) {
           </div>
         </div>
         <div className={`flex flex-col items-end`}>
-           <span className="text-2xl font-bold text-white">${(data.price || 0).toFixed(2)}</span>
+           <span className="text-2xl font-bold text-white">${data.price.toFixed(2)}</span>
            <span className={`flex items-center text-sm font-medium ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
               {isPositive ? <ArrowUpRight size={16} className="mr-0.5"/> : <ArrowDownRight size={16} className="mr-0.5"/>}
-              {(data.change || 0) > 0 ? '+' : ''}{(data.change || 0).toFixed(2)}%
+              {data.change > 0 ? '+' : ''}{data.change.toFixed(2)}%
            </span>
         </div>
       </div>
@@ -69,7 +39,7 @@ export function StockCard({ data }: StockCardProps) {
       {/* Chart */}
       <div className="h-40 w-full mb-6 relative z-10">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData}>
+          <AreaChart data={data.history}>
             <defs>
               <linearGradient id={`colorPrice-${data.symbol}`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={color} stopOpacity={0.2}/>
@@ -108,22 +78,23 @@ export function StockCard({ data }: StockCardProps) {
       <div className="grid grid-cols-2 gap-4 border-t border-[#27272a] pt-4 relative z-10">
         <div className="flex flex-col">
            <span className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Open</span>
-           <span className="text-sm font-medium text-gray-200">${(data.open || 0).toFixed(2)}</span>
+           <span className="text-sm font-medium text-gray-200">${data.open.toFixed(2)}</span>
         </div>
         <div className="flex flex-col">
            <span className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Volume</span>
-           <span className="text-sm font-medium text-gray-200">{data.volume || 'N/A'}</span>
+           <span className="text-sm font-medium text-gray-200">{data.volume}</span>
         </div>
         <div className="flex flex-col">
            <span className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">High</span>
-           <span className="text-sm font-medium text-gray-200">${(data.high || 0).toFixed(2)}</span>
+           <span className="text-sm font-medium text-gray-200">${data.high.toFixed(2)}</span>
         </div>
         <div className="flex flex-col">
            <span className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Low</span>
-           <span className="text-sm font-medium text-gray-200">${(data.low || 0).toFixed(2)}</span>
+           <span className="text-sm font-medium text-gray-200">${data.low.toFixed(2)}</span>
         </div>
       </div>
     </div>
   );
-}
+};
 
+export default StockCard;

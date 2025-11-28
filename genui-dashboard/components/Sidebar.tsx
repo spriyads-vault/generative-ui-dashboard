@@ -1,13 +1,12 @@
-"use client";
-
-import { BarChart3, CloudSun, Kanban, Settings, ChevronLeft, Hexagon } from "lucide-react";
+import React from 'react';
+import { BarChart3, CloudSun, Kanban, Settings, LayoutDashboard, ChevronLeft, Hexagon } from 'lucide-react';
 
 interface SidebarProps {
   collapsed: boolean;
   setCollapsed: (v: boolean) => void;
 }
 
-export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
+const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
   const menuItems = [
     { icon: BarChart3, label: 'Stock Card', desc: 'Display stock prices' },
     { icon: CloudSun, label: 'Weather Widget', desc: 'Show weather info' },
@@ -56,5 +55,6 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
       </div>
     </div>
   );
-}
+};
 
+export default Sidebar;

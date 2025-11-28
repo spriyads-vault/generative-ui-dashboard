@@ -1,0 +1,7 @@
+{
+  "name": "GenUI Dashboard",
+  "description": "A production-grade Generative UI dashboard featuring Gemini 2.5 Flash for text and Live API for real-time voice interaction, capable of rendering interactive widgets on demand.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
