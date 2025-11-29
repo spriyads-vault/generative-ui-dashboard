@@ -27,6 +27,12 @@ flowchart TD
     N --> A
 ```
 
+<img width="1795" height="934" alt="image" src="https://github.com/user-attachments/assets/1a13237f-9e90-4c2c-a7b9-322a20483916" />
+
+<img width="1758" height="840" alt="image" src="https://github.com/user-attachments/assets/909e5a86-4b35-4095-97d5-e36364e7d3d0" />
+
+
+
 ## Features
 
 - **StockCard**: Stock info with mini-chart (symbol, price, delta)
